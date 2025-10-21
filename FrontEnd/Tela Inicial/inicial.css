@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: #fff8c9;
+  color: #222;
+}
+
+/* Cabeçalho */
+.topo {
+  background: #FFF9AF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 50px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+  height: 80px;
+}
+
+.barra-pesquisa input {
+  width: 800px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.acoes a {
+  margin-left: 50px;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.acoes i {
+  font-size: 16px;
+  color: black;
+}
+
+/* Menu */
+.menu {
+  background: white;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu ul {
+  list-style: none;
+  display: inline-flex;
+  gap: 25px;
+  position: relative;
+}
+
+.menu > ul > li {
+  position: relative;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 5px;
+  transition: color 0.2s ease;
+}
+
+.menu a:hover {
+  color: #b40000;
+}
+
+.menu i {
+  font-size: 12px;
+  color: #777;
+  transition: transform 0.3s ease;
+}
+
+.menu li:hover > a i {
+  transform: rotate(180deg);
+  color: #b40000;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 35px;
+  left: 0;
+  background: white;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  padding: 10px 0;
+  min-width: 180px;
+  text-align: left;
+  z-index: 100;
+}
+
+.submenu li {
+  display: block;
+}
+
+.submenu a {
+  display: block;
+  padding: 10px 15px;
+  color: #444;
+  font-weight: 400;
+}
+
+.submenu a:hover {
+  background: #FFF9AF;
+  color: #b40000;
+}
+
+.menu li:hover > .submenu {
+  display: block;
+}
+
+.banner {
+  height: 250px;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 18px;
+}
+
+.produtos {
+  padding: 50px 80px;
+  text-align: center;
+}
+
+.produtos h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.grid-produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 220px;
+  text-align: center;
+}
+
+.card img {
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.rodape {
+  background: #873036;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  border-top: 1px solid white;
+}
