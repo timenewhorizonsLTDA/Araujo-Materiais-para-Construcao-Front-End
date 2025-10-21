@@ -9,7 +9,15 @@ body {
   justify-content: center;
   align-items: center;
 }
-
+logo-container {
+  align-items: center;
+  width: 320px;
+  margin-bottom: 20px;
+}img {
+  display: block;
+  margin: 0 auto;
+  max-width: 400px;}
+  
 /* Caixa de login */
 .login-container {
   background: #3D477E;
