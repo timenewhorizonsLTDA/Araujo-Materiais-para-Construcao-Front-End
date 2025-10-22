@@ -74,7 +74,22 @@
     </nav>
 
     <section class="banner">
-      <div class="slide">Banner principal</div>
+      <div class="carrossel">
+        <div class="slide ativo">
+          <img src="banner1.jpg" alt="Promoção de ferramentas" />
+        </div>
+        <div class="slide">
+          <img src="banner2.jpg" alt="Ofertas em hidráulica" />
+        </div>
+        <div class="slide">
+          <img src="banner3.jpg" alt="Materiais elétricos com desconto" />
+        </div>
+
+        <button class="btn prev">&#10094;</button>
+        <button class="btn next">&#10095;</button>
+
+        <div class="indicadores"></div>
+      </div>
     </section>
 
     <section class="produtos">
@@ -116,13 +131,67 @@
           <h3>Produto Novo 2</h3>
           <p>Estoque:</p>
         </div>
+        <div class="card">
+          <img src="produto3.png" alt="Produto novo" />
+          <h3>Produto Novo 3</h3>
+          <p>Estoque:</p>
+        </div>
+        <div class="card">
+          <img src="produto4.png" alt="Produto novo" />
+          <h3>Produto Novo 4</h3>
+          <p>Estoque:</p>
+        </div>
       </div>
     </section>
 
     <footer class="rodape">
-      <p>
-        © 2025 Araujo Materiais para Construção. Todos os direitos reservados.
-      </p>
+      <div class="rodape-container">
+        <!-- Formas de Pagamento -->
+        <div class="rodape-coluna">
+          <h3>Formas de Pagamento</h3>
+          <div class="pagamentos">
+            <img src="img/pagamentos.png" alt="pagamentos" />
+          </div>
+        </div>
+
+        <!-- Contatos -->
+        <div class="rodape-coluna">
+          <h3>Contatos</h3>
+          <p><i class="fa-solid fa-phone"></i> (00) 12345-6789</p>
+          <p><i class="fa-brands fa-whatsapp"></i> (00) 12345-6789</p>
+          <p>
+            <i class="fa-solid fa-envelope"></i>
+            araujomateriasparaconstrucao@gmail.com
+          </p>
+        </div>
+
+        <!-- Horários e Localização -->
+        <div class="rodape-coluna">
+          <h3>Horários de Atendimento</h3>
+          <p>
+            <i class="fa-regular fa-clock"></i> Seg. à Sex.: 8h às 18h<br />Sáb.:
+            8h às 14h
+          </p>
+
+          <h3>Localização</h3>
+          <p>
+            <i class="fa-solid fa-location-dot"></i> Quadra M Lote 10 - Parque
+            Esplanada 1, Valparaíso de Goiás 72878627
+          </p>
+        </div>
+
+        <!-- Redes Sociais -->
+        <div class="rodape-coluna">
+          <h3>Redes Sociais</h3>
+          <div class="redes-sociais">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
     </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>

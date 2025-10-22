@@ -48,21 +48,37 @@ body {
 
 /* Menu */
 .menu {
-  background: white;
-  padding: 10px 0;
-  text-align: center;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
   border-bottom: 1px solid #ddd;
 }
 
 .menu ul {
   list-style: none;
-  display: inline-flex;
-  gap: 25px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 40px;
+}
+
+.menu ul li {
   position: relative;
 }
 
-.menu > ul > li {
-  position: relative;
+.menu ul li a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s;
+}
+
+.menu ul li a:hover {
+  color: #b40000; /* cor da sua marca */
 }
 
 .menu a {
@@ -92,21 +108,40 @@ body {
 }
 
 .submenu {
-  display: none;
   position: absolute;
-  top: 35px;
+  top: 100%; /* aparece abaixo do item pai */
   left: 0;
-  background: white;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  border-radius: 6px;
-  padding: 10px 0;
-  min-width: 180px;
-  text-align: left;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: none; /* 🔴 escondido por padrão */
+  min-width: 200px;
+  padding: 10px 20px;
+  white-space: nowrap;
   z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.menu ul li:hover .submenu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 .submenu li {
-  display: block;
+  display: inline-block;
+  margin: 5px 10px;
+}
+
+.submenu li a {
+  color: #333;
+  font-weight: 400;
+}
+
+.submenu li a:hover {
+  color: #b40000;
 }
 
 .submenu a {
@@ -125,16 +160,96 @@ body {
   display: block;
 }
 
-.banner {
-  height: 250px;
-  background: #f9f9f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-  font-size: 18px;
+.menu ul li:hover .submenu {
+  display: block; /* ✅ mostra o submenu apenas ao passar o mouse */
 }
 
+/* Carrossel */
+.banner {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #f9f9f9;
+}
+
+.carrossel {
+  position: relative;
+  width: 100%;
+  height: 300px; /* ajuste conforme o tamanho das suas imagens */
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  display: none;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide.ativo {
+  display: block;
+  opacity: 1;
+}
+
+/* Botões de Navegação */
+.btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+  transition: background 0.3s;
+  user-select: none;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.prev {
+  left: 15px;
+}
+
+.next {
+  right: 15px;
+}
+/* Indicadores */
+.indicadores {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 50;
+}
+
+.indicadores span {
+  width: 10px;
+  height: 10px;
+  background: rgba(112, 91, 91, 0.6);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.indicadores span.ativo {
+  background: #b40000; /* cor da marca */
+  transform: scale(1.3);
+}
+
+/* Produtos */
 .produtos {
   padding: 50px 80px;
   text-align: center;
@@ -177,11 +292,70 @@ body {
   color: #555;
 }
 
+/* Rodapé */
 .rodape {
-  background: #873036;
-  padding: 20px;
-  text-align: center;
-  font-size: 14px;
-  color: white;
-  border-top: 1px solid white;
+  background-color: #873036; /* vinho escuro */
+  color: #fff;
+  padding: 40px 60px;
+  font-family: 'Inter', sans-serif;
+}
+
+.rodape-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  align-items: start;
+}
+
+.rodape-coluna h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.rodape-coluna p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  color: #f1f1f1;
+}
+
+.rodape-coluna i {
+  margin-right: 8px;
+  color: #ffffff;
+}
+
+/* Ícones de redes sociais */
+.redes-sociais {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.redes-sociais a {
+  color: #fff;
+  background-color: #873036;
+  padding: 10px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.redes-sociais a:hover {
+  background-color: #d13b3b;
+}
+
+/* Ícones das formas de pagamento */
+.pagamentos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pagamentos img {
+  width: 250px;
+  border-radius: 6px;
+  padding: 5px;
 }
