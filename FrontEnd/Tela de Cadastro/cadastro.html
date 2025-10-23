@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Cadastro</title>
   <link rel="stylesheet" href="style.css">
-  
 </head>
 
 <body>
@@ -13,31 +12,38 @@
   <div class="logo-container">
     <img src="img/logo4.png" alt="Logo da Empresa" class="logo">
   </div>
-  <p></p>
-  <div class="login-container">
-    <h1>Login</h1>
 
-    <form id="loginForm">
-      <input type="login" id="login" placeholder="Login" required>
+  <div class="cadastro-container">
+    <h1>Cadastro</h1>
+
+    <form id="cadastroForm">
+
+      <input type="text" id="nome" placeholder="Nome completo" required>
+      <input type="text" id="cpf" placeholder="CPF" required>
+      <input type="email" id="email" placeholder="E-mail" required>
+      <input type="tel" id="telefone" placeholder="Telefone" required>
 
       <div class="password-field">
         <input type="password" id="senha" placeholder="Senha" required>
-        <span class="toggle-password" id="togglePassword"></span>
+        <span class="toggle-password" id="togglePassword">👁️</span>
       </div>
 
-      <div class="remember-forgot">
+      <div class="termos-container">
         <label>
-          <input type="checkbox" id="lembrar">
-          Lembrar
+          <input type="checkbox" id="aceitoTermos" required>
+          Eu li e aceito os <a href="termosDeUso.html" target="_blank">Termos de Uso</a>
         </label>
-        <a href="#">Esqueci minha senha</a>
       </div>
 
-      <button type="submit">Entrar</button>
-
-      <p class="cadastro">
-        Não é cliente? Se torne um! <a href="cadastro.html">Cadastre-se</a>
+      <p class="info-text">
+        Ao clicar em <strong>Finalizar Cadastro</strong>, você concorda com nossos 
+        <a href="termosDeUso.html" target="_blank">Termos</a> e 
+        <a href="politica_Privacidade.html" target="_blank">Políticas de Privacidade</a>.
+        Você receberá um e-mail de confirmação de cadastro.
       </p>
+
+      <button type="submit">Finalizar Cadastro</button>
+
     </form>
   </div>
 
@@ -46,6 +52,6 @@
     <a href="politica_Privacidade.html">Políticas de Privacidade</a>
   </footer>
 
-  <script src="login.js"></script>
+  <script src="cadastro.js"></script>
 </body>
 </html>
