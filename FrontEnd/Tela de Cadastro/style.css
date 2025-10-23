@@ -1,0 +1,160 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #FFF9AF;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.logo {
+  max-width: 400px;
+  height: auto;
+}
+
+.cadastro-container {
+  background: #3D477E;
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 320px;
+  color: white;
+}
+
+.cadastro-container h1 {
+  margin-bottom: 25px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  width: 93%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #3D477E;
+  font-size: 16px;
+  background: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+}
+
+.password-field input {
+  width: 100%;
+  padding: 12px 40px 12px 12px; /* espaço direito para o ícone */
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  box-sizing: border-box; /* garante que padding não aumente largura */
+}
+
+/* Campo de senha com ícone */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 30px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  cursor: pointer;
+  color: #3D477E;
+  font-size: 16px;
+  background: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+}
+
+.termos-container {
+  text-align: left;
+  font-size: 13px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.termos-container a {
+  color: #bfc4f2;
+  text-decoration: underline;
+}
+
+.termos-container a:hover {
+  text-decoration: none;
+}
+
+.info-text {
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: #e0e0e0;
+  line-height: 1.4;
+}
+
+.info-text a {
+  color: #bfc4f2;
+  text-decoration: underline;
+}
+
+.info-text a:hover {
+  text-decoration: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #000E5D;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #00127f;
+}
+
+footer {
+  text-align: center;
+  margin-top: 25px;
+}
+
+footer a {
+  color: #000E5D;
+  font-weight: bold;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
