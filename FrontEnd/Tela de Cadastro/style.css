@@ -1,4 +1,3 @@
-/* Fundo geral */
 body {
   font-family: Arial, sans-serif;
   background-color: #FFF9AF;
@@ -10,20 +9,19 @@ body {
   align-items: center;
 }
 
-/* Logo */
 .logo-container {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  width: 320px;
+  width: 100%;
   margin-bottom: 20px;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto;
   max-width: 400px;
+  height: auto;
 }
 
-/* Caixa de cadastro */
 .cadastro-container {
   background: #3D477E;
   padding: 40px 50px;
@@ -38,7 +36,6 @@ body {
   margin-bottom: 25px;
 }
 
-/* Campos */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -52,7 +49,6 @@ input[type="password"] {
   font-size: 14px;
 }
 
-/* Senha com ícone */
 .password-field {
   position: relative;
 }
@@ -62,7 +58,6 @@ input[type="password"] {
   padding-right: 0px;
 }
 
-/* Ícone de alternar senha */
 .toggle-password {
   position: absolute;
   right: 10px;
@@ -79,7 +74,6 @@ input[type="password"] {
   justify-content: center;
 }
 
-/* Checkbox */
 .termos-container {
   text-align: left;
   font-size: 13px;
@@ -96,7 +90,6 @@ input[type="password"] {
   text-decoration: none;
 }
 
-/* Texto informativo */
 .info-text {
   font-size: 12px;
   margin-bottom: 20px;
@@ -105,7 +98,7 @@ input[type="password"] {
 }
 
 .info-text a {
-  color: #bfc4f2; /* mesma cor dos links do checkbox */
+  color: #bfc4f2;
   text-decoration: underline;
 }
 
@@ -113,7 +106,6 @@ input[type="password"] {
   text-decoration: none;
 }
 
-/* Botão */
 button {
   width: 100%;
   padding: 12px;
@@ -131,7 +123,6 @@ button:hover {
   background: #00127f;
 }
 
-/* Rodapé */
 footer {
   text-align: center;
   margin-top: 25px;

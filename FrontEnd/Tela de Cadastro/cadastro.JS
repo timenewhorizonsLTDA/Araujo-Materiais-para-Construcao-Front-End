@@ -1,4 +1,3 @@
-// Alterna entre mostrar/ocultar senha
 document.getElementById("togglePassword").addEventListener("click", function() {
   const senhaInput = document.getElementById("senha");
   const type = senhaInput.type === "password" ? "text" : "password";
@@ -6,7 +5,6 @@ document.getElementById("togglePassword").addEventListener("click", function() {
   this.textContent = type === "password" ? "👁️" : "🙈";
 });
 
-// Validação simples do cadastro
 document.getElementById("cadastroForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
