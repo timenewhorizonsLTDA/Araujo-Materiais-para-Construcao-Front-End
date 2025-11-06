@@ -1,3 +1,4 @@
+// Mostrar / esconder senha
 document.getElementById("togglePassword").addEventListener("click", function() {
   const senhaInput = document.getElementById("senha");
   const type = senhaInput.type === "password" ? "text" : "password";
@@ -5,7 +6,8 @@ document.getElementById("togglePassword").addEventListener("click", function() {
   this.textContent = type === "password" ? "👁️" : "🙈";
 });
 
-document.getElementById("cadastroForm").addEventListener("submit", function(event) {
+// Envio do formulário
+document.getElementById("cadastroForm").addEventListener("submit", async function(event) {
   event.preventDefault();
 
   const nome = document.getElementById("nome").value.trim();
@@ -20,10 +22,45 @@ document.getElementById("cadastroForm").addEventListener("submit", function(even
     return;
   }
 
-  if (nome && cpf && email && telefone && senha) {
-    alert("✅ Cadastro realizado com sucesso!");
-    console.log("Cadastro concluído:", { nome, cpf, email, telefone });
-  } else {
+  // Verifica se todos os campos foram preenchidos
+  if (!nome || !cpf || !email || !telefone || !senha) {
     alert("Por favor, preencha todos os campos obrigatórios.");
+    return;
+  }
+
+  const dados = {
+    nome: nome,
+    cpf: cpf,
+    email: email,
+    contato: telefone,
+    senha: senha
+  };
+
+  try {
+    const response = await fetch("http://localhost:8080/auth/cadastrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dados)
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      alert(`✅ Cadastro realizado com sucesso! Um código de validação foi enviado para o e-mail de ${result.email}.`);
+      console.log("Usuário cadastrado:", result);
+
+      // Redirecionar para página de validação (opcional)
+      // window.location.href = "validar.html";
+
+    } else {
+      const errorText = await response.text();
+      alert(`❌ Erro ao cadastrar: ${errorText}`);
+      console.error("Erro na resposta:", errorText);
+    }
+
+  } catch (error) {
+    alert("❌ Falha ao conectar ao servidor. Verifique se a API está em execução.");
+    console.error("Erro de conexão:", error);
   }
 });
