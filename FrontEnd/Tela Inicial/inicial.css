@@ -31,19 +31,26 @@ body {
   border: 1px solid #ccc;
 }
 
-.acoes a {
-  margin-left: 50px;
-  color: black;
-  text-decoration: none;
-  font-weight: 500;
-  display: inline-flex;
+.acoes {
+  display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 15px;
+}
+
+.acoes a {
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
 }
 
 .acoes i {
-  font-size: 16px;
+  font-size: 14px;
   color: black;
+}
+
+.login-actions {
+  display: flex;
+  gap: 5px;
 }
 
 /* Menu */
