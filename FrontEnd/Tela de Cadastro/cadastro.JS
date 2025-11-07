@@ -6,7 +6,6 @@ document.getElementById("togglePassword").addEventListener("click", function() {
   this.textContent = type === "password" ? "👁️" : "🙈";
 });
 
-// Envio do formulário
 document.getElementById("cadastroForm").addEventListener("submit", async function(event) {
   event.preventDefault();
 
@@ -22,7 +21,6 @@ document.getElementById("cadastroForm").addEventListener("submit", async functio
     return;
   }
 
-  // Verifica se todos os campos foram preenchidos
   if (!nome || !cpf || !email || !telefone || !senha) {
     alert("Por favor, preencha todos os campos obrigatórios.");
     return;
@@ -50,8 +48,8 @@ document.getElementById("cadastroForm").addEventListener("submit", async functio
       alert(`✅ Cadastro realizado com sucesso! Um código de validação foi enviado para o e-mail de ${result.email}.`);
       console.log("Usuário cadastrado:", result);
 
-      // Redirecionar para página de validação (opcional)
-      // window.location.href = "validar.html";
+      // ✅ Redireciona automaticamente após sucesso
+      window.location.href = "../Tela de Confirmação/confirmacao.html";
 
     } else {
       const errorText = await response.text();
