@@ -1,5 +1,11 @@
 const inputs = document.querySelectorAll(".code-inputs input");
 const button = document.querySelector("button");
+const emailDoUsuario = localStorage.getItem("emailCadastrado");
+
+if (!emailDoUsuario) {
+  alert("Erro: e-mail não encontrado! Volte para a tela de cadastro.");
+  window.location.href = "cadastro.html";
+}
 
 inputs.forEach((input, index) => {
   input.addEventListener("input", () => {
