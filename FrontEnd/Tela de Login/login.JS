@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/auth/login"; // ajuste a porta se necessário
+const API_URL = "http://localhost:8080/auth/login"; // ajuste se necessário
 
 document.getElementById("loginForm").addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -12,7 +12,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
   }
 
   try {
-    // Envia requisição de login
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
@@ -23,17 +22,55 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
     if (response.ok) {
       const data = await response.json();
+      const token = data.token;
 
-      // Armazena o token JWT no localStorage
-      localStorage.setItem("token", data.token);
+      // Armazena o token
+      localStorage.setItem("token", token);
+      console.log(token)
 
-      // ✅ Redireciona para a página do gerente
-      window.location.href = "../Tela de Gerencia/gerente.html";
+      // Decodifica o token JWT
+      const decoded = jwt_decode(token);
+      console.log("🔍 Token decodificado:", decoded);
+
+      // Extrai roles (pode vir como roles, authorities ou role)
+      const roles = decoded.roles || decoded.authorities || decoded.role || [];
+
+      console.log("👥 Lista de roles encontrados:", roles);
+
+      // Define a hierarquia dos papéis
+      const hierarquia = ["CLIENTE", "FUNCIONARIO", "GERENTE"];
+
+      // Garante que roles seja um array
+      const rolesArray = Array.isArray(roles) ? roles : [roles];
+
+      // Encontra o papel mais alto
+      let roleUsuario = null;
+      for (let i = hierarquia.length - 1; i >= 0; i--) {
+        if (rolesArray.includes(hierarquia[i])) {
+          roleUsuario = hierarquia[i];
+          break;
+        }
+      }
+
+      console.log("✅ Papel final detectado:", roleUsuario);
+
+      // Redireciona conforme o papel
+      if (roleUsuario === "CLIENTE") {
+        window.location.href = "../Tela Inicial/inicial.html";
+      } else if (roleUsuario === "FUNCIONARIO") {
+        window.location.href = "../Tela de Funcionário/funcinario.html";
+      } else if (roleUsuario === "GERENTE") {
+        window.location.href = "../Tela de Gerencia/gerente.html";
+      } else {
+        alert("Papel de usuário desconhecido. Contate o suporte técnico.");
+      }
+
     } else if (response.status === 401) {
       alert("Credenciais inválidas. Verifique seu e-mail e senha.");
     } else {
       alert("Erro ao tentar fazer login. Código: " + response.status);
     }
+
   } catch (error) {
     console.error("Erro de conexão:", error);
     alert("Falha ao conectar ao servidor. Verifique se o backend está rodando.");
