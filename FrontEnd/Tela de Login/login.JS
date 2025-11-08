@@ -60,7 +60,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
       } else if (roleUsuario === "FUNCIONARIO") {
         window.location.href = "../Tela de Funcionário/funcinario.html";
       } else if (roleUsuario === "GERENTE") {
-        window.location.href = "../Tela de Gerencia/gerente.html";
+      //  window.location.href = "../Tela de Gerencia/gerente.html";
       } else {
         alert("Papel de usuário desconhecido. Contate o suporte técnico.");
       }

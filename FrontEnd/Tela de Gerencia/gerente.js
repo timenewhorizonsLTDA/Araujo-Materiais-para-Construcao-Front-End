@@ -2,8 +2,9 @@ const cardFuncionarios = document.querySelectorAll(".card-gerente")[0];
 const modal = document.getElementById("modal-funcionarios");
 const closeModal = document.querySelector(".closeModal");
 
-
-
+// Recupera o token do localStorage
+const token = localStorage.getItem("token");
+console.log("Token do gerente:", token);
 // abrir modal ao clicar no card Funcionários
 cardFuncionarios.addEventListener("click", function (e) {
     e.preventDefault();
@@ -45,11 +46,14 @@ if (cadastroForm) {
 
                 try {
                     const response = await fetch("http://localhost:8080/gerente/adicionar", {
+                      
                         
 
                         method: "POST",
                         headers: {
+                            
                             "Content-Type": "application/json",
+                            autorization: "Bearer " + token,
                         },
                         body: JSON.stringify(dados),
                     });
