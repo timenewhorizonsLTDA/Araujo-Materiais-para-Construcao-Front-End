@@ -8,57 +8,72 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 }
-logo-container {
+
+/* Logo */
+.logo-container {
   align-items: center;
   width: 320px;
   margin-bottom: 20px;
-}img {
+}
+
+img {
   display: block;
   margin: 0 auto;
-  max-width: 400px;}
+  max-width: 400px;
+}
 
-
-/* Caixa de  */
-
+/* Caixa de Confirmação */
 .confirm-container {
   background: #3D477E;
   padding: 40px 50px;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  text-align:left;
+  text-align: center; /* centraliza título e campos */
   justify-content: center;
   width: 320px;
   color: white;
 }
-.code-inputs input  {
-  width: 35px;   /* largura da caixa */
-  height: 40px;  /* altura da caixa */
+
+/* Título */
+.confirm-container h1 {
+  margin-bottom: 8px;
+  font-size: 24px;
+  color: white; /* garante cor branca */
+  text-align: center; /* centraliza o texto */
+}
+
+/* Inputs de código */
+.code-inputs {
+  display: flex;
+  justify-content: center; /* centraliza horizontalmente */
+  gap: 8px; /* espaçamento entre as caixas */
+  margin-bottom: 12px;
+}
+
+.code-inputs input {
+  width: 35px;
+  height: 40px;
   font-size: 18px;
   text-align: center;
   border-radius: 6px;
   border: none;
   outline: none;
 }
-.confirm-container h1 {
-  margin-bottom: 4px;
-  font-size: 24px;
-}
 
+/* Input maior de confirmação */
 input.confirm[type="text"] {
-   
-    width: 93%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    font-size: 2px;
+  width: 93%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
 }
-.cornfirm-container input[type="text"]:focus {
-  box-shadow: 0 0 5px #000E5D;
 
+.confirm-container input[type="text"]:focus {
+  box-shadow: 0 0 5px #000E5D;
 }
 
 /* Botão */
@@ -79,6 +94,19 @@ button:hover {
   background: #00127f;
 }
 
+/* Link Reenviar Código */
+.remember-forgot a {
+  color: white; /* cor branca */
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.remember-forgot a:hover {
+  color: #f1f1f1;
+}
+
 /* Rodapé */
 footer {
   text-align: center;
@@ -95,13 +123,15 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+
+/* Rodapé decorativo */
 .rodape {
   background-color: #873036; /* vinho escuro */
   color: #fff;
   padding: 20px 0;
   font-family: 'Inter', sans-serif;
-  width: 100%; /* ocupa toda a largura */
-  box-sizing: border-box; /* evita estouros por padding */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .rodape-container {
@@ -109,15 +139,14 @@ footer a:hover {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 40px;
   align-items: start;
-  max-width: 1200px; /* limite interno */
-  margin: 0 auto; /* centraliza conteúdo */
-  padding: 0 20px; /* respiro nas bordas */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .rodape-coluna {
   text-align: center;
 }
-
 
 .rodape-coluna h3 {
   font-size: 18px;
@@ -142,6 +171,7 @@ footer a:hover {
   display: flex;
   gap: 12px;
   margin-top: 10px;
+  justify-content: center;
 }
 
 .redes-sociais a {
@@ -158,5 +188,3 @@ footer a:hover {
 .redes-sociais a:hover {
   background-color: #d13b3b;
 }
-
-
