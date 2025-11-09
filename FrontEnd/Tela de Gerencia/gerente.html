@@ -67,9 +67,6 @@
       <!-- Footer permanece igual -->
     </footer>
 
-    <!-- ==============================
-         MODAL FUNCIONÁRIOS
-         ============================== -->
     <div id="modalEditarFuncionario" class="modal" style="display: none">
       <div class="modal-content">
         <span class="closeModal">&times;</span>
@@ -105,6 +102,26 @@
               </thead>
               <tbody id="listaFuncionarios"></tbody>
             </table>
+          </div>
+
+          <div id="modalConfirmarDelete" class="modal" style="display: none">
+            <div class="modal-content">
+              <h3>Confirmar Exclusão</h3>
+              <p>Digite sua senha para confirmar:</p>
+
+              <input
+                type="password"
+                id="senhaConfirmacao"
+                placeholder="Senha do gerente"
+              />
+
+              <div class="botoes">
+                <button onclick="confirmarDeleteFuncionario()">
+                  Confirmar
+                </button>
+                <button onclick="fecharModalDelete()">Cancelar</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
