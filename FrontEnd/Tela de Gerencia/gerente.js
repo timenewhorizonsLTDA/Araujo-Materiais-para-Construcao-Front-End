@@ -1,3 +1,7 @@
+let pendingDeleteId = null;
+const modalConfirmDelete = document.getElementById("modalConfirmarDelete");
+const senhaConfirmInput = document.getElementById("senhaConfirmacao");
+
 // === Seletores principais ===
 const cardFuncionarios = document.querySelectorAll(".card-gerente")[0];
 const modal = document.getElementById("modalEditarFuncionario"); // ID corrigido
@@ -55,8 +59,8 @@ function exibirFuncionarios(funcionarios) {
       <td>${f.email}</td>
       <td>${f.contato || "-"}</td>
       <td>
-        <button class="editar" data-id="${f.id}">✏️</button>
-        <button class="excluir" data-id="${f.id}">🗑️</button>
+        <button class="editar" data-id="${f.id}">Edit</button>
+        <button class="excluir" data-id="${f.id}">Del</button>
       </td>
     `;
     tbody.appendChild(row);
@@ -68,9 +72,9 @@ async function salvarFuncionario() {
   const nome = document.getElementById("nomeFunc").value.trim();
   const cpf = document.getElementById("cpfFunc").value.trim();
   const email = document.getElementById("emailFunc").value.trim();
-  const telefone = document.getElementById("telFunc").value.trim();
+  const contato = document.getElementById("telFunc").value.trim();
 
-  if (!nome || !cpf || !email || !telefone) {
+  if (!nome || !cpf || !email || !contato) {
     alert("Por favor, preencha todos os campos obrigatórios.");
     return;
   }
@@ -79,7 +83,7 @@ async function salvarFuncionario() {
     nome: nome,
     cpf: cpf,
     email: email,
-    contato: telefone,
+    contato: contato,
   };
 
   try {
@@ -107,34 +111,77 @@ async function salvarFuncionario() {
 }
 
 // === Excluir funcionário ===
-tbody.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("excluir")) {
-    const id = e.target.dataset.id;
+tbody.addEventListener("click", (e) => {
+  const btnDelete = e.target.closest(".excluir");
+  if (!btnDelete) return;
 
-    if (confirm("Deseja realmente excluir este funcionário?")) {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/gerente/deletar/${id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+  const id = btnDelete.dataset.id;
+  pendingDeleteId = id;
 
-        if (response.ok) {
-          alert("Funcionário excluído com sucesso!");
-          listarFuncionarios();
-        } else {
-          alert("Erro ao excluir funcionário.");
-        }
-      } catch (error) {
-        console.error("Erro:", error);
-      }
-    }
-  }
+  // abre o modal de confirmação (mostra o modal pequeno)
+  modalConfirmDelete.style.display = "flex";
+  senhaConfirmInput.value = ""; // limpa campo de senha
+  senhaConfirmInput.focus();
 });
+
+function fecharModalDelete() {
+  modalConfirmDelete.style.display = "none";
+  pendingDeleteId = null;
+  senhaConfirmInput.value = "";
+}
+
+async function confirmarDeleteFuncionario() {
+  if (!pendingDeleteId) {
+    alert("Erro interno: id não definido.");
+    fecharModalDelete();
+    return;
+  }
+
+  const senha = senhaConfirmInput.value.trim();
+  if (!senha) {
+    alert("Digite a senha do gerente para confirmar.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/gerente/deletar/${pendingDeleteId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({ senha: senha }),
+      }
+    );
+
+    if (response.status === 200) {
+      alert("Funcionário excluído com sucesso!");
+      fecharModalDelete();
+      listarFuncionarios();
+      return;
+    }
+
+    if (response.status === 401) {
+      alert("Senha incorreta.");
+      return;
+    }
+    if (response.status === 404) {
+      alert("Funcionário não encontrado.");
+      fecharModalDelete();
+      listarFuncionarios();
+      return;
+    }
+
+    const text = await response.text();
+    console.error("Erro ao excluir:", response.status, text);
+    alert("Erro ao excluir funcionário: " + (text || response.status));
+  } catch (err) {
+    console.error("Erro de conexão ao excluir:", err);
+    alert("Erro ao conectar ao servidor.");
+  }
+}
 
 // === Filtro de pesquisa ===
 buscarFuncInput.addEventListener("input", async (e) => {
