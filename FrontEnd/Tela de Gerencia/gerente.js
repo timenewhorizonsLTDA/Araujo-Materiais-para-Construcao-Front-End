@@ -156,7 +156,7 @@ async function confirmarDeleteFuncionario() {
       }
     );
 
-    if (response.status === 204) {
+    if (response.status === 200) {
       alert("Funcionário excluído com sucesso!");
       fecharModalDelete();
       listarFuncionarios();
