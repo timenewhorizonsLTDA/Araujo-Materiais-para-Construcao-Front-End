@@ -1,10 +1,12 @@
+// === Variáveis globais e modais ===
+let idEditando = null;
 let pendingDeleteId = null;
 const modalConfirmDelete = document.getElementById("modalConfirmarDelete");
 const senhaConfirmInput = document.getElementById("senhaConfirmacao");
 
 // === Seletores principais ===
 const cardFuncionarios = document.querySelectorAll(".card-gerente")[0];
-const modal = document.getElementById("modalEditarFuncionario"); // ID corrigido
+const modal = document.getElementById("modalEditarFuncionario");
 const closeModal = document.querySelector(".closeModal");
 const buscarFuncInput = document.getElementById("buscarFunc");
 const tbody = document.getElementById("listaFuncionarios");
@@ -13,30 +15,31 @@ const tbody = document.getElementById("listaFuncionarios");
 const token = localStorage.getItem("token");
 console.log("Token do gerente:", token);
 
-// === Abrir modal ===
+// === Abrir modal principal ===
 cardFuncionarios.addEventListener("click", (e) => {
   e.preventDefault();
   modal.style.display = "flex";
   listarFuncionarios();
 });
 
-// === Fechar modal ===
+// === Fechar modal principal ===
 closeModal.addEventListener("click", () => {
   modal.style.display = "none";
+  limparCampos();
 });
 window.addEventListener("click", (e) => {
-  if (e.target === modal) modal.style.display = "none";
+  if (e.target === modal) {
+    modal.style.display = "none";
+    limparCampos();
+  }
 });
 
-// === Função para listar funcionários ===
+// === Listar funcionários ===
 async function listarFuncionarios() {
   try {
     const response = await fetch("http://localhost:8080/gerente/buscar", {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+      headers: { Authorization: "Bearer " + token },
     });
-
     if (!response.ok) throw new Error("Erro ao buscar funcionários");
 
     const funcionarios = await response.json();
@@ -47,7 +50,7 @@ async function listarFuncionarios() {
   }
 }
 
-// === Exibir funcionários na tabela ===
+// === Exibir funcionários ===
 function exibirFuncionarios(funcionarios) {
   tbody.innerHTML = "";
 
@@ -57,38 +60,46 @@ function exibirFuncionarios(funcionarios) {
       <td>${f.id}</td>
       <td>${f.nome}</td>
       <td>${f.email}</td>
-      <td>${f.contato || "-"}</td>
+      <td>${f.telefone || f.contato || "-"}</td>
       <td>
-        <button class="editar" data-id="${f.id}">Edit</button>
-        <button class="excluir" data-id="${f.id}">Del</button>
+        <button class="editar" data-id="${f.id}">✏️</button>
+        <button class="excluir" data-id="${f.id}">🗑️</button>
       </td>
     `;
     tbody.appendChild(row);
   });
 }
 
-// === Cadastrar funcionário ===
+// === Cadastrar ou Editar funcionário ===
 async function salvarFuncionario() {
   const nome = document.getElementById("nomeFunc").value.trim();
   const cpf = document.getElementById("cpfFunc").value.trim();
   const email = document.getElementById("emailFunc").value.trim();
-  const contato = document.getElementById("telFunc").value.trim();
+  const telefone = document.getElementById("telFunc").value.trim();
 
-  if (!nome || !cpf || !email || !contato) {
+  if (!nome || !email || !telefone || (!idEditando && !cpf)) {
     alert("Por favor, preencha todos os campos obrigatórios.");
     return;
   }
 
   const dados = {
     nome: nome,
-    cpf: cpf,
     email: email,
-    contato: contato,
+    contato: telefone,
   };
 
+  if (!idEditando) dados.cpf = cpf;
+
   try {
-    const response = await fetch("http://localhost:8080/gerente/adicionar", {
-      method: "POST",
+    const url = idEditando
+      ? `http://localhost:8080/gerente/editar/${idEditando}`
+      : "http://localhost:8080/gerente/adicionar";
+    const method = idEditando ? "PUT" : "POST";
+
+    console.log("📤 Enviando requisição:", method, url, dados);
+
+    const response = await fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -96,21 +107,60 @@ async function salvarFuncionario() {
       body: JSON.stringify(dados),
     });
 
+    const text = await response.text();
+    console.log("📥 Resposta do servidor:", response.status, text);
+
     if (response.ok) {
-      alert("Funcionário cadastrado com sucesso!");
+      alert(
+        idEditando
+          ? "Funcionário atualizado com sucesso!"
+          : "Funcionário cadastrado com sucesso!"
+      );
       listarFuncionarios();
       limparCampos();
+      idEditando = null;
     } else {
-      const errorText = await response.text();
-      alert("Erro ao cadastrar funcionário: " + errorText);
+      if (text.includes("Campo ja cadastrado")) {
+        alert("Nenhuma alteração detectada. Modifique algum campo antes de salvar.");
+      } else if (text.includes("FuncionarioJaExistenteException")) {
+        alert("Já existe um funcionário com este CPF.");
+      } else {
+        alert("Erro ao salvar funcionário: " + text);
+      }
     }
   } catch (error) {
     console.error("Erro:", error);
-    alert("Erro ao cadastrar funcionário: " + error.message);
+    alert("Erro ao salvar funcionário: " + error.message);
   }
 }
 
-// === Excluir funcionário ===
+// === Preparar formulário para edição ===
+tbody.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("editar")) {
+    const id = e.target.dataset.id;
+    try {
+      const response = await fetch("http://localhost:8080/gerente/buscar", {
+        headers: { Authorization: "Bearer " + token },
+      });
+      const funcionarios = await response.json();
+      const func = funcionarios.find((f) => f.id == id);
+
+      if (func) {
+        idEditando = id;
+        document.getElementById("nomeFunc").value = func.nome;
+        document.getElementById("emailFunc").value = func.email;
+        document.getElementById("telFunc").value = func.telefone || func.contato || "";
+        document.getElementById("cpfFunc").value = func.cpf || "";
+        document.getElementById("cpfFunc").disabled = true;
+        alert("Você está editando o funcionário: " + func.nome);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar funcionário:", error);
+    }
+  }
+});
+
+// === Excluir funcionário (abre modal de confirmação) ===
 tbody.addEventListener("click", (e) => {
   const btnDelete = e.target.closest(".excluir");
   if (!btnDelete) return;
@@ -118,9 +168,8 @@ tbody.addEventListener("click", (e) => {
   const id = btnDelete.dataset.id;
   pendingDeleteId = id;
 
-  // abre o modal de confirmação (mostra o modal pequeno)
   modalConfirmDelete.style.display = "flex";
-  senhaConfirmInput.value = ""; // limpa campo de senha
+  senhaConfirmInput.value = "";
   senhaConfirmInput.focus();
 });
 
@@ -156,7 +205,7 @@ async function confirmarDeleteFuncionario() {
       }
     );
 
-    if (response.status === 200) {
+    if (response.ok || response.status === 204) {
       alert("Funcionário excluído com sucesso!");
       fecharModalDelete();
       listarFuncionarios();
@@ -210,4 +259,5 @@ function limparCampos() {
   document.getElementById("cpfFunc").value = "";
   document.getElementById("emailFunc").value = "";
   document.getElementById("telFunc").value = "";
+  document.getElementById("cpfFunc").disabled = false;
 }
