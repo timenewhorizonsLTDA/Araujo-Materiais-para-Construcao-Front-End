@@ -1,28 +1,21 @@
-// === Variáveis globais e modais ===
 let idEditando = null;
 let pendingDeleteId = null;
 const modalConfirmDelete = document.getElementById("modalConfirmarDelete");
 const senhaConfirmInput = document.getElementById("senhaConfirmacao");
-
-// === Seletores principais ===
 const cardFuncionarios = document.querySelectorAll(".card-gerente")[0];
 const modal = document.getElementById("modalEditarFuncionario");
 const closeModal = document.querySelector(".closeModal");
 const buscarFuncInput = document.getElementById("buscarFunc");
 const tbody = document.getElementById("listaFuncionarios");
-
-// === Token JWT do gerente ===
 const token = localStorage.getItem("token");
 console.log("Token do gerente:", token);
 
-// === Abrir modal principal ===
 cardFuncionarios.addEventListener("click", (e) => {
   e.preventDefault();
   modal.style.display = "flex";
   listarFuncionarios();
 });
 
-// === Fechar modal principal ===
 closeModal.addEventListener("click", () => {
   modal.style.display = "none";
   limparCampos();
@@ -34,7 +27,6 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// === Listar funcionários ===
 async function listarFuncionarios() {
   try {
     const response = await fetch("http://localhost:8080/gerente/buscar", {
@@ -121,7 +113,9 @@ async function salvarFuncionario() {
       idEditando = null;
     } else {
       if (text.includes("Campo ja cadastrado")) {
-        alert("Nenhuma alteração detectada. Modifique algum campo antes de salvar.");
+        alert(
+          "Nenhuma alteração detectada. Modifique algum campo antes de salvar."
+        );
       } else if (text.includes("FuncionarioJaExistenteException")) {
         alert("Já existe um funcionário com este CPF.");
       } else {
@@ -149,7 +143,8 @@ tbody.addEventListener("click", async (e) => {
         idEditando = id;
         document.getElementById("nomeFunc").value = func.nome;
         document.getElementById("emailFunc").value = func.email;
-        document.getElementById("telFunc").value = func.telefone || func.contato || "";
+        document.getElementById("telFunc").value =
+          func.telefone || func.contato || "";
         document.getElementById("cpfFunc").value = func.cpf || "";
         document.getElementById("cpfFunc").disabled = true;
         alert("Você está editando o funcionário: " + func.nome);

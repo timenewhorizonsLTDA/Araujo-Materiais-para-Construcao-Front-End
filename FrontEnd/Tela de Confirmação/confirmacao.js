@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputs = document.querySelectorAll(".code-inputs input");
   const btnEntrar = document.querySelector("button");
   const linkReenviar = document.querySelector(".remember-forgot a");
-
-  // o id que salvamos no localStorage lá no cadastro
   const usuarioId = localStorage.getItem("usuarioId");
 
   if (!usuarioId) {
@@ -14,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // mover cursor automaticamente
   inputs.forEach((input, index) => {
     input.addEventListener("input", () => {
       if (input.value.length === 1 && index < inputs.length - 1) {
@@ -23,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // botão VALIDAR código
   btnEntrar.addEventListener("click", async () => {
     let codigo = "";
     inputs.forEach((input) => (codigo += input.value));

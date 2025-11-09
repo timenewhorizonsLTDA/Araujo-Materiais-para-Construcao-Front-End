@@ -1,4 +1,3 @@
-// Mostrar / esconder senha
 document
   .getElementById("togglePassword")
   .addEventListener("click", function () {
@@ -50,22 +49,21 @@ document
       if (response.ok) {
         const result = await response.json();
         alert(
-          `✅ Cadastro realizado com sucesso! Um código de validação foi enviado para o e-mail de ${result.email}.`
+          `Cadastro realizado com sucesso! Um código de validação foi enviado para o e-mail de ${result.email}.`
         );
         console.log("Usuário cadastrado:", result);
 
         localStorage.setItem("usuarioId", result.id);
 
-        // ✅ Redireciona automaticamente após sucesso
         window.location.href = "../Tela de Confirmação/confirmacao.html";
       } else {
         const errorText = await response.text();
-        alert(`❌ Erro ao cadastrar: ${errorText}`);
+        alert(`Erro ao cadastrar: ${errorText}`);
         console.error("Erro na resposta:", errorText);
       }
     } catch (error) {
       alert(
-        "❌ Falha ao conectar ao servidor. Verifique se a API está em execução."
+        "Falha ao conectar ao servidor. Verifique se a API está em execução."
       );
       console.error("Erro de conexão:", error);
     }
