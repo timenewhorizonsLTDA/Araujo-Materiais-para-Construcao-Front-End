@@ -1,224 +1,156 @@
-// ==============================
-// AUTENTICAÇÃO E PERMISSÃO
-// ==============================
-(function checarAutenticacao() {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    alert("Você precisa estar logado para acessar esta página.");
-    window.location.href = "../login/login.html"; // redireciona para login
-    return;
-  }
-
-  try {
-    // decodifica token JWT (necessário incluir jwt-decode no HTML)
-    const decoded = jwt_decode(token);
-    const roles = decoded.roles || decoded.authorities || decoded.role || [];
-
-    const rolesArray = Array.isArray(roles) ? roles : [roles];
-
-    if (!rolesArray.includes("GERENTE")) {
-      alert("Você não tem permissão para acessar esta página.");
-      window.location.href = "../login/login.html";
-      return;
-    }
-
-    console.log("✅ Acesso permitido para GERENTE");
-  } catch (err) {
-    console.error("Token inválido:", err);
-    alert("Token inválido. Faça login novamente.");
-    localStorage.removeItem("token");
-    window.location.href = "../login/login.html";
-  }
-})();
-
-// ==============================
-// VARIÁVEIS GLOBAIS
-// ==============================
 let idFuncionarioEdicao = null;
 
-// ==============================
-// CARREGAR FUNCIONÁRIOS
-// ==============================
-async function carregarFuncionarios() {
+async function listarFuncionarios() {
   const token = localStorage.getItem("token");
 
   try {
     const response = await fetch("http://localhost:8080/gerente/buscar", {
       method: "GET",
-      headers: { Authorization: "Bearer " + token },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-    if (!response.ok) throw new Error("Erro ao buscar funcionários");
+    if (!response.ok) {
+      alert("Erro ao buscar funcionários.");
+      return;
+    }
 
     const funcionarios = await response.json();
-    const tbody = document.querySelector("#listaFuncionarios");
-    tbody.innerHTML = "";
+    const tabela = document.getElementById("listaFuncionarios");
+    tabela.innerHTML = "";
 
-    funcionarios.forEach((f) => {
+    funcionarios.forEach((func) => {
       const tr = document.createElement("tr");
+      tr.setAttribute("data-cpf", func.cpf);
       tr.innerHTML = `
-        <td>${f.id}</td>
-        <td>${f.nome}</td>
-        <td>${f.email}</td>
-        <td>${f.telefone}</td>
+        <td>${func.nome}</td>
+        <td>${func.email}</td>
+        <td>${func.telefone}</td>
+        <td>
+          <button onclick="carregarFuncionarioParaEdicao(${func.id}, this)">Editar</button>
+        </td>
       `;
-      tr.addEventListener("click", () => abrirModalEdicao(f));
-      tbody.appendChild(tr);
+      tabela.appendChild(tr);
     });
   } catch (e) {
     console.error(e);
-    alert("Erro ao carregar funcionários");
+    alert("Falha na conexão.");
   }
 }
 
-// ==============================
-// MODAL FUNCIONÁRIOS
-// ==============================
-const cardFuncionarios = document.querySelectorAll(".card-gerente")[0];
-const modalEditar = document.getElementById("modalEditarFuncionario");
-const closeModal = modalEditar.querySelector(".closeModal");
+function editarFuncionario(id, nome, email, telefone, cpf) {
+  idFuncionarioEditando = id;
 
-cardFuncionarios.addEventListener("click", function (e) {
-  e.preventDefault();
-  modalEditar.style.display = "flex";
-  carregarFuncionarios();
-});
+  document.getElementById("nomeFunc").value = nome;
+  document.getElementById("cpfFunc").value = cpf;
+  document.getElementById("emailFunc").value = email;
+  document.getElementById("telFunc").value = telefone;
 
-closeModal.addEventListener("click", function () {
-  modalEditar.style.display = "none";
-});
-
-window.addEventListener("click", function (e) {
-  if (e.target === modalEditar) {
-    modalEditar.style.display = "none";
-  }
-});
-
-// ==============================
-// ABRIR MODAL DE EDIÇÃO
-// ==============================
-function abrirModalEdicao(funcionario) {
-  idFuncionarioEdicao = funcionario.id;
-
-  document.getElementById("nomeFunc").value = funcionario.nome;
-  document.getElementById("cpfFunc").value = funcionario.cpf || "";
-  document.getElementById("emailFunc").value = funcionario.email;
-  document.getElementById("telFunc").value = funcionario.telefone;
-
-  modalEditar.style.display = "block";
+  document.getElementById("cpfFunc").disabled = true;
 }
 
-// ==============================
-// SALVAR CADASTRO/EDIÇÃO
-// ==============================
-async function salvarFuncionario() {
+function prepararCadastroNovo() {
+  idFuncionarioEdicao = null;
+
+  document.getElementById("nomeFunc").value = "";
+  document.getElementById("cpfFunc").value = "";
+  document.getElementById("emailFunc").value = "";
+  document.getElementById("telFunc").value = "";
+
+  document.getElementById("cpfFunc").disabled = false;
+}
+
+function carregarFuncionarioParaEdicao(id, botao) {
+  idFuncionarioEdicao = id;
+
+  const linha = botao.closest("tr");
+
+  document.getElementById("nomeFunc").value = linha.children[0].textContent;
+  document.getElementById("emailFunc").value = linha.children[1].textContent;
+  document.getElementById("telFunc").value = linha.children[2].textContent;
+
+  document.getElementById("cpfFunc").value = linha.dataset.cpf;
+  document.getElementById("cpfFunc").disabled = true;
+}
+
+async function salvarEdicaoFuncionario() {
   const token = localStorage.getItem("token");
 
-  const nome = document.getElementById("nomeFunc").value.trim();
-  const cpf = document.getElementById("cpfFunc").value.trim();
-  const email = document.getElementById("emailFunc").value.trim();
-  const contato = document.getElementById("telFunc").value.trim();
+  const funcData = {
+    nome: document.getElementById("nomeFunc").value,
+    email: document.getElementById("emailFunc").value,
+    contato: document.getElementById("telFunc").value,
+  };
 
-  if (!nome || !email || !contato) {
-    alert("Preencha todos os campos obrigatórios!");
-    return;
+  let url = "";
+  let method = "";
+
+  if (idFuncionarioEdicao == null) {
+    funcData.cpf = document.getElementById("cpfFunc").value;
+    url = "http://localhost:8080/gerente/adicionar";
+    method = "POST";
+  } else {
+    url = `http://localhost:8080/gerente/editar/${idFuncionarioEdicao}`;
+    method = "PUT";
   }
 
-  const url = idFuncionarioEdicao
-    ? `http://localhost:8080/gerente/editar/${idFuncionarioEdicao}`
-    : "http://localhost:8080/gerente/adicionar";
-
-  const metodo = idFuncionarioEdicao ? "PUT" : "POST";
-
-  const body = idFuncionarioEdicao
-    ? { nome, email, contato }
-    : { nome, cpf, email, contato };
-
   try {
-    const resp = await fetch(url, {
-      method: metodo,
+    const response = await fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(funcData),
     });
 
-    if (!resp.ok) {
-      const erro = await resp.text();
-      alert("❌ Erro: " + erro);
+    if (!response.ok) {
+      const txt = await response.text();
+      alert("Erro ao salvar funcionário:\n" + txt);
       return;
     }
+    alert("Salvo com sucesso!");
+    listarFuncionarios();
 
-    alert("✅ Funcionário salvo com sucesso!");
-    idFuncionarioEdicao = null;
-    modalEditar.style.display = "none";
-    carregarFuncionarios();
-  } catch (err) {
-    console.error(err);
-    alert("❌ Erro de conexão.");
-  }
-}
-
-// ==============================
-// MODAL DE DELETE
-// ==============================
-function abrirModalDelete() {
-  document.getElementById("modalConfirmarDelete").style.display = "block";
-}
-
-function fecharModalDelete() {
-  document.getElementById("modalConfirmarDelete").style.display = "none";
-}
-
-// ==============================
-// CONFIRMAR DELETE
-// ==============================
-async function confirmarDeleteFuncionario() {
-  const token = localStorage.getItem("token");
-  const id = idFuncionarioEdicao;
-  const senha = document.getElementById("senhaConfirmacao").value;
-
-  try {
-    const resp = await fetch(`http://localhost:8080/gerente/deletar/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify({ senha }),
-    });
-
-    if (resp.status === 401) {
-      alert("Senha incorreta");
-      return;
+    if (idFuncionarioEdicao != null) {
+      prepararCadastroNovo();
+    } else {
+      limparCampos();
     }
-
-    if (resp.status === 404) {
-      alert("Funcionário não encontrado");
-      return;
-    }
-
-    if (!resp.ok) {
-      alert("Erro ao excluir funcionário");
-      return;
-    }
-
-    alert("✅ Funcionário excluído com sucesso!");
-    fecharModalDelete();
-    modalEditar.style.display = "none";
-    carregarFuncionarios();
   } catch (e) {
     console.error(e);
-    alert("Erro ao excluir funcionário");
+    alert("Falha ao salvar");
   }
 }
 
-// ==============================
-// LOGOUT
-// ==============================
-function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "../login/login.html";
+function limparCampos() {
+  idFuncionarioEdicao = null;
+  document.getElementById("nomeFunc").value = "";
+  document.getElementById("emailFunc").value = "";
+  document.getElementById("telFunc").value = "";
+  document.getElementById("cpfFunc").value = "";
+
+  document.getElementById("cpfFunc").disabled = false;
 }
+
+const cardFuncionarios = document.querySelectorAll(".card-gerente")[0];
+const modal = document.getElementById("modalEditarFuncionario");
+const closeModalBtn = modal.querySelector(".closeModal");
+
+cardFuncionarios.addEventListener("click", function (e) {
+  e.preventDefault();
+  prepararCadastroNovo();
+  modal.style.display = "flex";
+  carregarFuncionarios();
+});
+
+closeModalBtn.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
+window.addEventListener("click", function (e) {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
