@@ -1,3 +1,4 @@
+/* === ESTILO BASE === */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +11,7 @@ body {
   color: #222;
 }
 
-/* Cabeçalho */
+/* === CABEÇALHO === */
 .topo {
   background: #FFF9AF;
   display: flex;
@@ -39,10 +40,11 @@ body {
   color: black;
 }
 
+/* === CONTAINER PRINCIPAL === */
 .gerente-container {
   padding: 40px 60px;
   background-color: #eeeeee;
-  min-height: calc(100vh - 200px); /* deixa o fundo cinza até encostar no rodapé */
+  min-height: calc(100vh - 200px);
 }
 
 .gerente-container h2 {
@@ -88,8 +90,9 @@ body {
   color: #444;
 }
 
+/* === RODAPÉ === */
 .rodape {
-  background-color: #873036; /* vinho escuro */
+  background-color: #873036;
   color: #fff;
   padding: 40px 60px;
   font-family: 'Inter', sans-serif;
@@ -120,7 +123,6 @@ body {
   color: #ffffff;
 }
 
-/* Ícones de redes sociais */
 .redes-sociais {
   display: flex;
   gap: 12px;
@@ -142,7 +144,6 @@ body {
   background-color: #d13b3b;
 }
 
-/* Ícones das formas de pagamento */
 .pagamentos {
   display: flex;
   flex-direction: column;
@@ -155,15 +156,18 @@ body {
   padding: 5px;
 }
 
+/* === MODAL BASE === */
 .modal {
-  display: none;
+  display: none; 
   position: fixed;
-  left:0; top:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.6);
-  justify-content:center;
-  align-items:center;
-  z-index: 9999;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); 
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
@@ -172,23 +176,7 @@ body {
   max-width:1200px;
   padding:25px;
   border-radius:10px;
-  animation: fade .3s;
-}
-
-@keyframes fade {
-  from {opacity:0; transform:scale(0.9);}
-  to {opacity:1; transform:scale(1);}
-}
-
-.form-func {
-  width:30%;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.tabela-func {
-  width:70%;
+  animation: fade 0.3s;
 }
 
 .closeModal {
@@ -197,39 +185,167 @@ body {
   cursor:pointer;
 }
 
-.modal {
-  display: none; 
-  position: fixed;
-  z-index: 999; /* importante */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5); 
+/* === REFINAMENTO VISUAL DO FORMULÁRIO DE FUNCIONÁRIOS === */
+.modal-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: flex-start;
 }
 
+/* Caixa do formulário */
+.form-func {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  background: #fdfdfd;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  transition: 0.3s ease;
+}
 
-.modal-content h3 {
-  margin-top: 0;
-  margin-bottom: 18px;
+.form-func:hover {
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.form-func h3 {
   font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
   font-weight: 600;
+  text-align: center;
 }
-.modal-content p {
-  margin-bottom: 12px;
-}
-.modal-content input[type="text"],
-.modal-content input[type="password"] {
+
+.form-func input {
   width: 100%;
-  padding: 8px 12px;
-  margin-bottom: 16px;
-  border: 1px solid #aaa;
+  padding: 10px 12px;
   border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-func input:focus {
+  border-color: #c93c3c;
+  box-shadow: 0 0 0 3px rgba(201, 60, 60, 0.1);
+  outline: none;
+}
+
+.form-func button {
+  background: #c93c3c;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 5px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.form-func button:hover {
+  background: #a12f2f;
+  transform: translateY(-1px);
+}
+
+.form-func button:active {
+  transform: scale(0.98);
+}
+
+/* Caixa da tabela */
+.tabela-func {
+  flex: 2;
+  min-width: 450px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+#buscarFunc {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  margin-bottom: 15px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+#buscarFunc:focus {
+  border-color: #c93c3c;
+  box-shadow: 0 0 0 3px rgba(201,60,60,0.1);
+  outline: none;
+}
+
+/* Tabela visual aprimorada */
+.tabela-func table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 14px;
 }
+
+.tabela-func th {
+  background: #c93c3c;
+  color: white;
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.tabela-func td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.tabela-func tr:hover {
+  background-color: #fff2f2;
+}
+
+/* Botões de ação */
+.tabela-func button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 4px;
+  transition: transform 0.2s;
+}
+
+.tabela-func button:hover {
+  transform: scale(1.2);
+}
+
+.tabela-func button.editar {
+  color: #007bff;
+}
+
+.tabela-func button.excluir {
+  color: #c93c3c;
+}
+
+/* Modal de confirmação refinado */
+#modalConfirmarDelete .modal-content {
+  max-width: 400px;
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+#modalConfirmarDelete h3 {
+  margin-bottom: 10px;
+  color: #c93c3c;
+}
+
+#modalConfirmarDelete input {
+  margin-top: 10px;
+}
+
 .modal-content .botoes {
   display: flex;
   gap: 10px;
@@ -259,6 +375,13 @@ body {
 .modal-content .botoes button:last-child:hover {
   background: #c6c6c6;
 }
+
+/* === ANIMAÇÕES === */
+@keyframes fade {
+  from {opacity:0; transform:scale(0.9);}
+  to {opacity:1; transform:scale(1);}
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to   { opacity: 1; transform: scale(1); }
