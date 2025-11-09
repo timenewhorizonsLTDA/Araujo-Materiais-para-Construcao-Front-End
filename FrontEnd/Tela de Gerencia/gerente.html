@@ -84,12 +84,6 @@
             <input type="text" id="emailFunc" placeholder="Email" />
             <input type="text" id="telFunc" placeholder="Telefone" />
             <button onclick="salvarFuncionario()">Salvar</button>
-            <button
-              onclick="abrirModalDelete()"
-              style="background-color: red; color: white"
-            >
-              Excluir Funcionário
-            </button>
           </div>
 
           <!-- TABELA DE FUNCIONÁRIOS -->
@@ -106,6 +100,7 @@
                   <th>Nome</th>
                   <th>Email</th>
                   <th>Telefone</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody id="listaFuncionarios"></tbody>
@@ -115,22 +110,6 @@
       </div>
     </div>
 
-    <!-- MODAL CONFIRMAÇÃO DELETE -->
-    <div id="modalConfirmarDelete" class="modal" style="display: none">
-      <div class="modal-content">
-        <h3>Confirmar Exclusão</h3>
-        <p>Digite sua senha para confirmar:</p>
-        <input
-          type="password"
-          id="senhaConfirmacao"
-          placeholder="Senha do gerente"
-        />
-        <div class="botoes">
-          <button onclick="confirmarDeleteFuncionario()">Confirmar</button>
-          <button onclick="fecharModalDelete()">Cancelar</button>
-        </div>
-      </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3/build/jwt-decode.min.js"></script>
     <script src="gerente.js"></script>
   </body>
